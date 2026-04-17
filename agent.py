@@ -3,51 +3,22 @@ import os
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# ---------- SMART SUMMARY FUNCTION ----------
-def prepare_summary(df, col):
-    positive = df[df['Sentiment']=="Positive"][col].head(20).tolist()
-    negative = df[df['Sentiment']=="Negative"][col].head(20).tolist()
-    neutral = df[df['Sentiment']=="Neutral"][col].head(10).tolist()
-
-    summary = f"""
-Positive Feedback Examples:
-{positive}
-
-Negative Feedback Examples:
-{negative}
-
-Neutral Feedback Examples:
-{neutral}
-
-Total Positive: {len(df[df['Sentiment']=="Positive"])}
-Total Negative: {len(df[df['Sentiment']=="Negative"])}
-Total Neutral: {len(df[df['Sentiment']=="Neutral"])}
-"""
-    return summary
-
-
-# ---------- FINAL AI FUNCTION ----------
 def generate_ai_report(df, col):
     try:
-        summary = prepare_summary(df, col)
+        # Small sample to avoid limit
+        sample = df.sample(min(200, len(df)))
+
+        text_data = "\n".join(sample[col].astype(str))
 
         prompt = f"""
-You are an expert event analyst.
+        Analyze this feedback and give:
 
-Analyze this summarized feedback data:
-
-{summary}
-
-Give output in this format:
-
-1. Overall Performance:
-2. Key Strengths:
-3. Major Problems:
-4. Suggestions for Improvement:
-5. Final Verdict (Successful / Average / Needs Improvement)
-
-Keep it clear, structured, and professional.
-"""
+        - Overall performance
+        - Key strengths
+        - Major problems
+        - Suggestions for improvement
+        - Final verdict
+        """
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -57,4 +28,31 @@ Keep it clear, structured, and professional.
         return response.choices[0].message.content
 
     except Exception:
-        return "⚠️ AI service busy or rate-limited. Please try again."
+        # 🔥 FALLBACK SYSTEM (VERY IMPORTANT)
+        positive = (df['Sentiment']=="Positive").sum()
+        negative = (df['Sentiment']=="Negative").sum()
+        neutral = (df['Sentiment']=="Neutral").sum()
+
+        total = len(df)
+        score = (positive/total)*100
+
+        result = f"""
+AI Summary (Fallback Mode):
+
+Overall Performance:
+Success Rate: {round(score,2)}%
+
+Key Strengths:
+- High positive feedback from users
+
+Major Problems:
+- Negative feedback indicates issues in some areas
+
+Suggestions:
+- Improve weak areas identified
+- Maintain strong aspects of event
+
+Final Verdict:
+{"Successful" if score > 70 else "Average" if score > 50 else "Needs Improvement"}
+"""
+        return result
