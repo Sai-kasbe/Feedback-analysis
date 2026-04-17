@@ -3,7 +3,53 @@ import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import matplotlib.pyplot as plt
 from agent import generate_ai_report
+st.markdown("""
+<style>
 
+/* Background */
+body {
+    background-color: #f4f6f9;
+}
+
+/* Main title */
+h1 {
+    color: #1f2937;
+    font-weight: 700;
+}
+
+/* Card style */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+/* Upload box */
+[data-testid="stFileUploader"] {
+    border: 2px dashed #6366f1;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #eef2ff;
+}
+
+/* Metric styling */
+.stMetric {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Section spacing */
+.block-container {
+    padding-top: 2rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
 # ---------- PAGE CONFIG ----------
 st.set_page_config(page_title="AI Feedback Analyzer", layout="wide")
 
