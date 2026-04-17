@@ -161,9 +161,7 @@ if file:
     st.markdown("## 🤖 AI Recommendations")
 
     if st.button("🚀 Generate AI Insights"):
-    st.info("⚡ Generating insights... please wait")
-
-    report = generate_ai_report(df, feedback_col)
-
-    st.success("Done")
-    st.write(report)
+        st.info("⚡ Generating insights... please wait")
+        report = generate_ai_report(df, feedback_col)
+        st.success("Done")
+        st.write(report)
