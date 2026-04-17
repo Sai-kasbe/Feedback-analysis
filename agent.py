@@ -4,25 +4,31 @@ import os
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_ai_report(df, col):
-    text_data = "\n".join(df[col].astype(str).head(2000))  
-    # limit for performance
+    try:
+        # Take small smart sample
+        sample_df = df.sample(min(300, len(df)))
 
-    prompt = f"""
-    Analyze the following event feedback:
+        text_data = "\n".join(sample_df[col].astype(str))
 
-    {text_data}
+        prompt = f"""
+        Analyze the following event feedback:
 
-    Provide:
-    - Overall sentiment summary
-    - Key problems
-    - Positive highlights
-    - Suggestions for improvement
-    - Ideas for future events
-    """
+        {text_data}
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
-    )
+        Provide:
+        - Overall sentiment summary
+        - Key problems
+        - Positive highlights
+        - Suggestions for improvement
+        - Ideas for future events
+        """
 
-    return response.choices[0].message.content
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        return response.choices[0].message.content
+
+    except Exception as e:
+        return "⚠️ AI service is busy or rate-limited. Please try again later."
