@@ -164,7 +164,7 @@ st.line_chart(trend)
 # Explanation
 st.info("Each point represents average sentiment of 200 feedbacks (smoothed view)")
     # ---------- AI INSIGHTS ----------
-    st.markdown("## 🤖 AI Recommendations")
+st.markdown("## 🤖 AI Recommendations")
 
 if st.button("🚀 Generate AI Insights"):
     with st.spinner("Analyzing feedback intelligently..."):
