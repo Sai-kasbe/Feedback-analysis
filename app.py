@@ -151,11 +151,18 @@ if file:
         )
         st.pyplot(fig)
 
-    # ---------- TREND ----------
-    st.markdown("## 📉 Trend Analysis")
+# ---------- BETTER TREND ----------
+st.markdown("## 📉 Feedback Trend (Easy View)")
 
-    df['Smooth'] = df['Score'].rolling(50).mean()
-    st.line_chart(df['Smooth'])
+# Group into batches
+df['Batch'] = df.index // 200   # group every 200 rows
+
+trend = df.groupby('Batch')['Score'].mean()
+
+st.line_chart(trend)
+
+# Explanation
+st.info("Each point represents average sentiment of 200 feedbacks (smoothed view)")
 
     # ---------- AI INSIGHTS ----------
     st.markdown("## 🤖 AI Recommendations")
