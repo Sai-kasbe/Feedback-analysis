@@ -70,8 +70,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------- TITLE ----------
-st.title("🎯 AI Event Feedback Analyzer")
-st.markdown("Analyze large-scale feedback data with AI insights")
+st.markdown("""
+<div style='padding:25px; border-radius:15px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color:white'>
+    <h1>🎯 AI Event Feedback Analyzer</h1>
+    <p style='font-size:18px;'>Analyze thousands of feedbacks instantly with AI-powered insights</p>
+</div>
+""", unsafe_allow_html=True)
 
 # ---------- FILE UPLOAD ----------
 file = st.file_uploader("📂 Upload CSV File", type=["csv"])
