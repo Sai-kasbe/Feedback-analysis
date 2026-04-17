@@ -166,8 +166,9 @@ st.info("Each point represents average sentiment of 200 feedbacks (smoothed view
     # ---------- AI INSIGHTS ----------
     st.markdown("## 🤖 AI Recommendations")
 
-    if st.button("🚀 Generate AI Insights"):
-        st.info("⚡ Generating insights... please wait")
+if st.button("🚀 Generate AI Insights"):
+    with st.spinner("Analyzing feedback intelligently..."):
         report = generate_ai_report(df, feedback_col)
-        st.success("Done")
-        st.write(report)
+
+    st.success("Insights Generated")
+    st.write(report)
